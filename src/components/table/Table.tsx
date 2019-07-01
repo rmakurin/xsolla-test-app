@@ -1,8 +1,9 @@
 import React from 'react';
 import TableRow from './TableRow';
 import TableHeader from './TableHeader';
-import transactions from '../../data/data.json';
+import transactions from '../../../data/data.json';
 import TableFilter from './TableFilter';
+import Wrapper from '../Wrapper';
 
 const headers = {
   projectNameTitle: 'Проект',
@@ -27,17 +28,19 @@ const Table: React.FC = () => {
   };
 
   return (
-    <div className='Table'>
-      <TableHeader
-        projectNameTitle={headers.projectNameTitle}
-        payMethodTitle={headers.payMethodTitle}
-        statusTitle={headers.statusTitle}
-        userNameTitle={headers.userNameTitle}
-        dateTitle={headers.dateTitle}
-      />
-      <TableFilter />
-      {createTable()}
-    </div>
+    <Wrapper>
+      <div className='Table'>
+        <TableHeader
+          projectNameTitle={headers.projectNameTitle}
+          payMethodTitle={headers.payMethodTitle}
+          statusTitle={headers.statusTitle}
+          userNameTitle={headers.userNameTitle}
+          dateTitle={headers.dateTitle}
+        />
+        <TableFilter />
+        {createTable()}
+      </div>
+    </Wrapper>
   );
 };
 

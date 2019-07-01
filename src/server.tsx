@@ -1,8 +1,9 @@
 import express from 'express';
 import React from 'react';
 import ReactDom from 'react-dom/server';
-import App from './components/App';
+import { StaticRouter } from 'react-router';
 import renderHTML from './html';
+import Paths from './components/Paths';
 
 const app = express();
 
@@ -12,8 +13,12 @@ app.get('*.js', (req, res, next) => {
   next();
 });
 
-app.get('/', (_req, res) => {
-  const componentHTML = ReactDom.renderToString(React.createElement(App));
+app.use((req, res) => {
+  const componentHTML = ReactDom.renderToString(
+    <StaticRouter location={req.url}>
+      <Paths />
+    </StaticRouter>
+  );
 
   return res.end(renderHTML(componentHTML));
 });
