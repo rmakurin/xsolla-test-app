@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from './table/Table';
+import Table from './Table';
 import { Switch, Route } from 'react-router-dom';
 import Chart from './Chart';
 import Rating from './Rating';

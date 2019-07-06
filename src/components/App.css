@@ -10,6 +10,7 @@ body {
 
 .App {
   padding: 20px;
+  padding-bottom: 0;
 }
 
 .App-header {
@@ -19,8 +20,12 @@ body {
   justify-content: center;
 }
 
+.App-link-wrapper {
+  width: 20em;
+  text-align: center;
+}
+
 .App-link {
-  margin: 0 20px;
   padding: 2px;
   color: #141414;
   border-bottom: 0.1rem solid #636b46;
