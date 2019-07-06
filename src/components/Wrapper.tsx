@@ -6,13 +6,7 @@ const Wrapper: React.FC = props => {
     <div className='App'>
       <header className='App-header'>
         <div className='App-link-wrapper'>
-          <NavLink
-            className='App-link'
-            activeClassName='Selected'
-            exact
-            to='/'
-            href='#List'
-          >
+          <NavLink className='App-link' activeClassName='Selected' exact to='/'>
             Список транзакций
           </NavLink>
         </div>
@@ -22,7 +16,6 @@ const Wrapper: React.FC = props => {
             activeClassName='Selected'
             exact
             to='/rating'
-            href='#PaymentRaiting'
           >
             Рейтинг платежных систем
           </NavLink>
@@ -32,10 +25,9 @@ const Wrapper: React.FC = props => {
             className='App-link'
             activeClassName='Selected'
             exact
-            to='/chart'
-            href='#PaymentGraph'
+            to='/list'
           >
-            График популярности
+            Список проектов
           </NavLink>
         </div>
       </header>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from './Table';
 import { Switch, Route } from 'react-router-dom';
-import Chart from './Chart';
+import List from './List';
 import Rating from './Rating';
 
 const Paths: React.FC = () => {
@@ -9,7 +9,7 @@ const Paths: React.FC = () => {
     <Switch>
       <Route exact path='/' component={Table} />
       <Route exact path='/rating' component={Rating} />
-      <Route exact path='/chart' component={Chart} />
+      <Route exact path='/list' component={List} />
     </Switch>
   );
 };
