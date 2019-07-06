@@ -100,6 +100,8 @@ const trsFormatter = (sorted: sort[], filtered: filter[]) => {
   return result;
 };
 
+app.use(express.static('dist/public'));
+
 app.use(express.json());
 
 app.get('*.js', (req, res, next) => {
@@ -132,8 +134,6 @@ app.use((req, res) => {
 
   return res.end(renderHTML(componentHTML));
 });
-
-app.use(express.static('dist/public'));
 
 const PORT = process.env.PORT || 3001;
 

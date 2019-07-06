@@ -9,7 +9,8 @@
     "dev-server": "webpack --mode development --env.platform=server && node dist/server.js",
     "build-client": "webpack --mode production --env.platform=web",
     "build-server": "webpack --mode production --env.platform=server",
-    "nodemon": "nodemon -e"
+    "nodemon": "nodemon -e",
+    "start": "npm run build-server && npm run build-client && node dist/server.js"
   },
   "author": "Makurin Roman",
   "license": "ISC",
