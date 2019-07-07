@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import List from './List';
 import Rating from './Rating';
 
-const Paths: React.FC = () => {
+const Routes: React.FC = () => {
   return (
     <Switch>
       <Route exact path='/' component={Table} />
@@ -14,4 +14,4 @@ const Paths: React.FC = () => {
   );
 };
 
-export default Paths;
+export default Routes;

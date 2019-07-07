@@ -3,9 +3,11 @@ import React from 'react';
 import ReactDom from 'react-dom/server';
 import { StaticRouter } from 'react-router';
 import renderHTML from './html';
-import Paths from './components/Paths';
+import Routes from './components/Routes';
 import transactions from '../data/data.json';
 import { transaction } from './itansaction';
+import { Provider } from 'react-redux';
+import configureStore from './redux/configureStore';
 
 const app = express();
 
@@ -126,10 +128,13 @@ app.post('/data', (req, res) => {
 });
 
 app.use((req, res) => {
+  const store = configureStore();
   const componentHTML = ReactDom.renderToString(
-    <StaticRouter location={req.url}>
-      <Paths />
-    </StaticRouter>
+    <Provider store={store}>
+      <StaticRouter location={req.url}>
+        <Routes />
+      </StaticRouter>
+    </Provider>
   );
 
   return res.end(renderHTML(componentHTML));

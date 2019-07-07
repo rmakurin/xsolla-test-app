@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
-import ReactTable from 'react-table';
+import ReactTable, { SortingRule, Filter, Resize } from 'react-table';
 import 'react-table/react-table.css';
 import Wrapper from './Wrapper';
+import {
+  dataRequest,
+  pageChanged,
+  pageSizeChanged,
+  sortedChanged,
+  filteredChanged,
+  resizedChanged
+} from '../redux/actions/tableActions';
+import { connect } from 'react-redux';
+import { transaction } from '../itansaction';
 
 const dateFormatter = (date: Date) => {
   return `${date.getFullYear()}/\
@@ -45,55 +55,59 @@ const columns = [
   }
 ];
 
-interface TableState {
-  data: any;
+interface TableProps {
+  dispatch: Function;
+  data: transaction[];
   pages: number;
   loading: boolean;
+  errors: null;
+  page: number;
+  pageSize: number;
+  sorted: SortingRule[];
+  filtered: Filter[];
+  resized: Resize[];
 }
 
-class Table extends Component<{}, TableState> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      data: [],
-      pages: -1,
-      loading: false
-    };
-  }
+class Table extends Component<TableProps, {}> {
   render() {
     return (
       <Wrapper>
         <ReactTable
           className='Table'
           columns={columns}
-          data={this.state.data}
-          pages={this.state.pages}
-          loading={this.state.loading}
+          data={this.props.data}
+          pages={this.props.pages}
+          loading={this.props.loading}
           manual
           onFetchData={state => {
-            this.setState({ loading: true });
-            fetch('/data', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
+            this.props.dispatch(
+              dataRequest({
                 page: state.page,
                 pageSize: state.pageSize,
                 sorted: state.sorted,
                 filtered: state.filtered
               })
-            })
-              .then(res => {
-                return res.json();
-              })
-              .then(res => {
-                this.setState({
-                  data: res.data,
-                  pages: res.pages,
-                  loading: false
-                });
-              });
+            );
+          }}
+          page={this.props.page}
+          pageSize={this.props.pageSize}
+          sorted={this.props.sorted}
+          filtered={this.props.filtered}
+          resized={this.props.resized}
+          onPageChange={pageIndex => {
+            this.props.dispatch(pageChanged(pageIndex));
+          }}
+          onPageSizeChange={(pageSize, pageIndex) => {
+            this.props.dispatch(pageSizeChanged(pageSize, pageIndex));
+          }}
+          onSortedChange={newSorted => {
+            this.props.dispatch(sortedChanged(newSorted));
+          }}
+          onFilteredChange={filtered => {
+            this.props.dispatch(filteredChanged(filtered));
+          }}
+          onResizedChange={newResized => {
+            this.props.dispatch(resizedChanged(newResized));
           }}
           previousText={'Назад'}
           nextText={'Вперед'}
@@ -108,4 +122,30 @@ class Table extends Component<{}, TableState> {
   }
 }
 
-export default Table;
+function mapStateToProps(state: any) {
+  const {
+    data,
+    pages,
+    loading,
+    errors,
+    page,
+    pageSize,
+    sorted,
+    filtered,
+    resized
+  } = state.table;
+
+  return {
+    data,
+    pages,
+    loading,
+    errors,
+    page,
+    pageSize,
+    sorted,
+    filtered,
+    resized
+  };
+}
+
+export default connect(mapStateToProps)(Table);

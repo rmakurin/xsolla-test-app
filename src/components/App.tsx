@@ -1,13 +1,19 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
-import Paths from './Paths';
+import Routes from './Routes';
+import { Provider } from 'react-redux';
+import configureStore from '../redux/configureStore';
+
+const store = configureStore();
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Paths />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
+    </Provider>
   );
 };
 
