@@ -102,15 +102,15 @@ const trsFormatter = (sorted: sort[], filtered: filter[]) => {
   return result;
 };
 
-app.use(express.static('dist/public'));
-
-app.use(express.json());
-
 app.get('*.js', (req, res, next) => {
   req.url += '.gz';
   res.set('Content-Encoding', 'gzip');
   next();
 });
+
+app.use(express.static('dist/public'));
+
+app.use(express.json());
 
 app.post('/data', (req, res) => {
   const page = req.body.page ? req.body.page : 0;

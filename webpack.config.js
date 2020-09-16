@@ -23,12 +23,13 @@ if (process.env.NODE_ENV === 'production') {
       dry: false
     })
   );
-  plugins.push(new webpack.optimize.DedupePlugin());
+  plugins.push(new webpack.optimize.UglifyJsPlugin());
+  plugins.push(new webpack.optimize.AggressiveMergingPlugin());
   plugins.push(new webpack.optimize.OccurenceOrderPlugin());
 }
 
 module.exports = env => {
-  if (env.platform === 'web' && env.NODE_ENV === 'production')
+  if (env.platform === 'web' && env.NODE_ENV === 'production') {
     plugins.push(
       new CompressionPlugin({
         filename: '[path].gz[query]',
@@ -39,6 +40,7 @@ module.exports = env => {
         deleteOriginalAssets: true
       })
     );
+  }
   return {
     entry: env.platform === 'server' ? './server.ts' : './src/client.ts',
     resolve: {
@@ -82,7 +84,7 @@ module.exports = env => {
       ]
     },
     target: env.platform === 'server' ? 'node' : 'web',
-    devtool: env.NODE_ENV !== 'production' ? 'source-map' : null,
+    devtool: env.NODE_ENV !== 'production' ? 'source-map' : false,
     devServer: {
       contentBase: path.join(__dirname, 'dist/public'),
       headers: { 'Access-Control-Allow-Origin': '*' }

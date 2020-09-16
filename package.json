@@ -7,8 +7,8 @@
     "webpack-devserver": "webpack-dev-server --debug --hot --devtool eval-source-map --output-pathinfo --watch --colors --inline --port 8050 --host localhost --mode development --env.platform=web",
     "dev-client": "webpack --mode development --env.platform=web",
     "dev-server": "webpack --mode development --env.platform=server && node dist/server.js",
-    "build-client": "webpack --mode production --env.platform=web",
-    "build-server": "webpack --mode production --env.platform=server",
+    "build-client": "webpack --mode production --env.NODE_ENV=production --env.platform=web",
+    "build-server": "webpack --mode production --env.NODE_ENV=production --env.platform=server",
     "nodemon": "nodemon -e",
     "start": "npm run build-server && npm run build-client && node dist/server.js"
   },
