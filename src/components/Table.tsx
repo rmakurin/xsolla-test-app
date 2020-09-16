@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactTable, { SortingRule, Filter, Resize } from 'react-table';
-import 'react-table/react-table.css';
 import Wrapper from './Wrapper';
 import {
   dataRequest,
@@ -55,8 +54,7 @@ const columns = [
   }
 ];
 
-interface TableProps {
-  dispatch: Function;
+interface IStateProps {
   data: transaction[];
   pages: number;
   loading: boolean;
@@ -68,61 +66,57 @@ interface TableProps {
   resized: Resize[];
 }
 
-class Table extends Component<TableProps, {}> {
-  render() {
-    return (
-      <Wrapper>
-        <ReactTable
-          className='Table'
-          columns={columns}
-          data={this.props.data}
-          pages={this.props.pages}
-          loading={this.props.loading}
-          manual
-          onFetchData={state => {
-            this.props.dispatch(
-              dataRequest({
-                page: state.page,
-                pageSize: state.pageSize,
-                sorted: state.sorted,
-                filtered: state.filtered
-              })
-            );
-          }}
-          page={this.props.page}
-          pageSize={this.props.pageSize}
-          sorted={this.props.sorted}
-          filtered={this.props.filtered}
-          resized={this.props.resized}
-          onPageChange={pageIndex => {
-            this.props.dispatch(pageChanged(pageIndex));
-          }}
-          onPageSizeChange={(pageSize, pageIndex) => {
-            this.props.dispatch(pageSizeChanged(pageSize, pageIndex));
-          }}
-          onSortedChange={newSorted => {
-            this.props.dispatch(sortedChanged(newSorted));
-          }}
-          onFilteredChange={filtered => {
-            this.props.dispatch(filteredChanged(filtered));
-          }}
-          onResizedChange={newResized => {
-            this.props.dispatch(resizedChanged(newResized));
-          }}
-          previousText={'Назад'}
-          nextText={'Вперед'}
-          loadingText={'Загрузка...'}
-          noDataText={'По Вашему запросу ничего не найдено'}
-          pageText={'Страница'}
-          ofText={'из'}
-          rowsText={'строк'}
-        />
-      </Wrapper>
-    );
-  }
-}
+const Table: React.FC<IStateProps & typeof mapDispatchToProps> = (props) => {
+  const {
+    data,
+    pages,
+    loading,
+    page,
+    pageSize,
+    sorted,
+    filtered,
+    resized,
+    onPageChanged,
+    onPageSizeChanged,
+    onSortedChanged,
+    onFilteredChanged,
+    onResizedChanged,
+    onFetchData
+  } = props;
 
-function mapStateToProps(state: any) {
+  return (
+    <Wrapper>
+      <ReactTable
+        className='Table'
+        columns={columns}
+        data={data}
+        pages={pages}
+        loading={loading}
+        manual
+        onFetchData={onFetchData}
+        page={page}
+        pageSize={pageSize}
+        sorted={sorted}
+        filtered={filtered}
+        resized={resized}
+        onPageChange={onPageChanged}
+        onPageSizeChange={onPageSizeChanged}
+        onSortedChange={onSortedChanged}
+        onFilteredChange={onFilteredChanged}
+        onResizedChange={onResizedChanged}
+        previousText={'Назад'}
+        nextText={'Вперед'}
+        loadingText={'Загрузка...'}
+        noDataText={'По Вашему запросу ничего не найдено'}
+        pageText={'Страница'}
+        ofText={'из'}
+        rowsText={'строк'}
+      />
+    </Wrapper>
+  );
+};
+
+function mapStateToProps(state: any): IStateProps {
   const {
     data,
     pages,
@@ -148,4 +142,19 @@ function mapStateToProps(state: any) {
   };
 }
 
-export default connect(mapStateToProps)(Table);
+const mapDispatchToProps = {
+  onPageChanged: pageChanged,
+  onPageSizeChanged: pageSizeChanged,
+  onSortedChanged: sortedChanged,
+  onFilteredChanged: filteredChanged,
+  onResizedChanged: resizedChanged,
+  onFetchData: (state: any) =>
+    dataRequest({
+      page: state.page,
+      pageSize: state.pageSize,
+      sorted: state.sorted,
+      filtered: state.filtered
+    })
+};
+
+export default connect<IStateProps>(mapStateToProps, mapDispatchToProps)(Table);
