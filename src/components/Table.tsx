@@ -11,6 +11,7 @@ import {
 } from '../redux/actions/tableActions';
 import { connect } from 'react-redux';
 import { transaction } from '../itansaction';
+import 'react-table/react-table.css';
 
 const dateFormatter = (date: Date) => {
   return `${date.getFullYear()}/\
